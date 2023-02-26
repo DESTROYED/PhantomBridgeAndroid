@@ -25,7 +25,14 @@ class PhantomBridge {
             activity.startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(urlHandler.combineConnectionUrl(redirectScheme, redirectHost, appUrl))
+                    Uri.parse(
+                        urlHandler.combineConnectionUrl(
+                            redirectScheme,
+                            redirectHost,
+                            appUrl,
+                            NetworkType.DEVNET
+                        )
+                    )
                 )
             )
         } else {

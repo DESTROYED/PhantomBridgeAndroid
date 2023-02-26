@@ -5,6 +5,7 @@ internal object PhantomQuery {
     const val NONCE_QUERY = "nonce="
     const val DATE_QUERY = "data="
     const val DAPP_KEY_QUERY = "dapp_encryption_public_key"
+    const val CLUSTER = "cluster"
     const val APP_URL_QUERY = "app_url"
     const val REDICRECT_LINK_QUERY = "redirect_link"
 }
