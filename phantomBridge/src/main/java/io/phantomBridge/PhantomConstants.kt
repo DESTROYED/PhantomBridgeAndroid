@@ -24,3 +24,12 @@ internal object JsonVariables {
     const val PUBLIC_KEY = "public_key"
     const val SESSION = "session"
 }
+
+internal object SharedPreferencesExtras{
+    const val NONCE = "nonce"
+    const val WALLET = "wallet"
+    const val SESSION = "session"
+    const val PHANTOM_PUBLIC_KEY = "phantom_public_key"
+    const val PUBLIC_KEY = "public_key"
+    const val PRIVATE_KEY = "private_key"
+}

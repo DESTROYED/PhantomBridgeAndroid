@@ -3,7 +3,6 @@ package io.phantomBridge
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import io.phantomBridge.Package.PHANTOM_PACKAGE
 import io.phantomBridge.PhantomQuery.DATE_QUERY
@@ -11,10 +10,15 @@ import io.phantomBridge.PhantomQuery.ERROR_CODE
 import io.phantomBridge.PhantomQuery.ERROR_MESSAGE
 import io.phantomBridge.PhantomQuery.NONCE_QUERY
 import io.phantomBridge.PhantomQuery.PUBLIC_KEY_QUERY
+import io.phantomBridge.error.ErrorCodes
+import io.phantomBridge.error.findErrorCode
+import io.phantomBridge.types.NetworkType
 
 class PhantomBridge {
 
     private val urlHandler = UrlHandler()
+
+    fun getWallet() = SessionHandler.getWallet()
 
     fun connectWallet(
         activity: AppCompatActivity,
@@ -50,7 +54,7 @@ class PhantomBridge {
         onConnectionError: (error: ErrorCodes?) -> Unit
     ) {
         if ((action ?: "") == Intent.ACTION_VIEW) {
-            if (!dataUri.toString().contains(ERROR_CODE)) {
+            if (dataUri.toString().contains(ERROR_CODE)) {
                 urlHandler.parseQuery(dataUri, ERROR_MESSAGE)
                 onConnectionError(findErrorCode(urlHandler.parseQuery(dataUri, ERROR_CODE)))
             } else {

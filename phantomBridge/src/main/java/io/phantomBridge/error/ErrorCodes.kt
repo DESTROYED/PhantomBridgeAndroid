@@ -1,4 +1,4 @@
-package io.phantomBridge
+package io.phantomBridge.error
 
 enum class ErrorCodes : Error {
     DISCONNECTED {

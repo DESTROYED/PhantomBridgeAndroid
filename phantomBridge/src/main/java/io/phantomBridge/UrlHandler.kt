@@ -6,6 +6,7 @@ import io.phantomBridge.PhantomQuery.APP_URL_QUERY
 import io.phantomBridge.PhantomQuery.CLUSTER
 import io.phantomBridge.PhantomQuery.DAPP_KEY_QUERY
 import io.phantomBridge.PhantomQuery.REDICRECT_LINK_QUERY
+import io.phantomBridge.types.NetworkType
 
 internal class UrlHandler {
 
