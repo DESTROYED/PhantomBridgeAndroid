@@ -1,6 +1,8 @@
 package io.phantomBridge
 
 internal object PhantomQuery {
+    const val ERROR_CODE = "errorCode="
+    const val ERROR_MESSAGE = "errorMessage="
     const val PUBLIC_KEY_QUERY = "phantom_encryption_public_key="
     const val NONCE_QUERY = "nonce="
     const val DATE_QUERY = "data="

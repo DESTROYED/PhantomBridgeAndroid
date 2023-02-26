@@ -25,16 +25,15 @@ object SessionHandler {
         phantomPublicKey: String?,
         nonce: String?,
         data: String?,
-        onWalletConnected: (wallet: String) -> Unit,
-        onConnectionError: (error: String) -> Unit
+        onWalletConnected: (wallet: String) -> Unit
     ) {
         val box = phantomPublicKey?.let {
             TweetNacl.Box(decode(phantomPublicKey), localPrivateKey)
         }
 
-        val dataJson = box?.open(decode(data!!), decode(nonce!!))?.let { String(it) }
+        val dataJson = box?.open(decode(data!!), decode(nonce!!))
+            ?.let { String(it) }
             ?.let { JSONObject(it) }
-
 
         val wallet = dataJson?.getString(PUBLIC_KEY)
         phantomSession = dataJson?.getString(SESSION)
