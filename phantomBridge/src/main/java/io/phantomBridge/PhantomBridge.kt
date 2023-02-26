@@ -1,8 +1,10 @@
 package io.phantomBridge
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
+import io.phantomBridge.Package.PHANTOM_PACKAGE
 import io.phantomBridge.PhantomQuery.DATE_QUERY
 import io.phantomBridge.PhantomQuery.NONCE_QUERY
 import io.phantomBridge.PhantomQuery.PUBLIC_KEY_QUERY
@@ -12,16 +14,23 @@ class PhantomBridge {
     private val urlHandler = UrlHandler()
 
     fun connectWallet(
-        activity: AppCompatActivity, redirectScheme: String,
+        activity: AppCompatActivity,
+        redirectScheme: String,
         redirectHost: String,
-        appUrl: String
+        appUrl: String,
+        packageManager: PackageManager,
+        appNotInstalled: () -> Unit
     ) {
-        activity.startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(urlHandler.combineConnectionUrl(redirectScheme, redirectHost, appUrl))
+        if (isPackageInstalled(PHANTOM_PACKAGE, packageManager)) {
+            activity.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(urlHandler.combineConnectionUrl(redirectScheme, redirectHost, appUrl))
+                )
             )
-        )
+        } else {
+            appNotInstalled.invoke()
+        }
     }
 
     fun handleWalletConnection(

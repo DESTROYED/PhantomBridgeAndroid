@@ -9,7 +9,11 @@ internal object PhantomQuery {
     const val REDICRECT_LINK_QUERY = "redirect_link"
 }
 
-internal object Endpoints{
+internal object Package {
+    const val PHANTOM_PACKAGE = "app.phantom"
+}
+
+internal object Endpoints {
     const val CONNECT_ENDPOINT = "connect"
 }
 

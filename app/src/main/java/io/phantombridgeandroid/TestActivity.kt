@@ -18,16 +18,19 @@ class TestActivity : AppCompatActivity() {
                 this,
                 getString(R.string.deep_link_scheme),
                 getString(R.string.deep_link_host),
-                getString(R.string.appUrl)
-            )
+                getString(R.string.appUrl),
+                packageManager
+            ) {
+                Toast.makeText(this, "Phantom app is not installed ", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        phantomBridge.handleWalletConnection(intent.action, intent.data,{
+        phantomBridge.handleWalletConnection(intent.action, intent.data, {
             Toast.makeText(this, "My wallet is " + it, Toast.LENGTH_SHORT).show()
-        },{
+        }, {
             Toast.makeText(this, "Looks like we got an error: " + it, Toast.LENGTH_SHORT).show()
         })
     }
