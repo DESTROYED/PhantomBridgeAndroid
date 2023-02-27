@@ -1,12 +1,10 @@
 package io.phantombridgeandroid
 
-import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.phantomBridge.PhantomBridge
-import io.phantomBridge.SessionHandler
 import io.phantomBridgeandroid.R
 
 class TestActivity : AppCompatActivity() {
@@ -15,12 +13,6 @@ class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_connnect_wallet)
         super.onCreate(savedInstanceState)
-        SessionHandler.preparePreferences(
-            application.getSharedPreferences(
-                application.packageName + "_preferences",
-                ContextWrapper.MODE_PRIVATE
-            )
-        )
 
         findViewById<View>(R.id.connectButton).setOnClickListener {
             if (phantomBridge.getWallet().isNullOrEmpty()) {

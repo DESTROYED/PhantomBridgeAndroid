@@ -1,4 +1,4 @@
-package io.phantomBridge
+package io.phantomBridge.utils
 
 internal object PhantomQuery {
     const val ERROR_CODE = "errorCode="

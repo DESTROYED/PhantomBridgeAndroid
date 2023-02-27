@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name="io.phantombridgeandroid.TestApplication"
         android:icon="@drawable/ic_launcher_background"
         android:label="@string/app_name"
         android:supportsRtl="true"

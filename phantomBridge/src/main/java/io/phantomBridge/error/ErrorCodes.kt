@@ -27,4 +27,4 @@ enum class ErrorCodes : Error {
     }
 }
 
-fun findErrorCode(code: String) = ErrorCodes.values().find { it.errorCode == code }
+fun findErrorCode(code: String?) = ErrorCodes.values().find { it.errorCode == code }

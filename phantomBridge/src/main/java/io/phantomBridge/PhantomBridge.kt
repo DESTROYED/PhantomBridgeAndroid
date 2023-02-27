@@ -4,15 +4,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import io.phantomBridge.Package.PHANTOM_PACKAGE
-import io.phantomBridge.PhantomQuery.DATE_QUERY
-import io.phantomBridge.PhantomQuery.ERROR_CODE
-import io.phantomBridge.PhantomQuery.ERROR_MESSAGE
-import io.phantomBridge.PhantomQuery.NONCE_QUERY
-import io.phantomBridge.PhantomQuery.PUBLIC_KEY_QUERY
+import io.phantomBridge.utils.Package.PHANTOM_PACKAGE
+import io.phantomBridge.utils.PhantomQuery.DATE_QUERY
+import io.phantomBridge.utils.PhantomQuery.ERROR_CODE
+import io.phantomBridge.utils.PhantomQuery.ERROR_MESSAGE
+import io.phantomBridge.utils.PhantomQuery.NONCE_QUERY
+import io.phantomBridge.utils.PhantomQuery.PUBLIC_KEY_QUERY
 import io.phantomBridge.error.ErrorCodes
 import io.phantomBridge.error.findErrorCode
 import io.phantomBridge.types.NetworkType
+import io.phantomBridge.utils.UrlHandler
+import io.phantomBridge.utils.isPackageInstalled
 
 class PhantomBridge {
 

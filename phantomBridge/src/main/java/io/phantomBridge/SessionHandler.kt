@@ -4,8 +4,11 @@ import android.content.SharedPreferences
 import com.iwebpp.crypto.TweetNacl
 import io.phantomBridge.Base58.decode
 import io.phantomBridge.Base58.encode
-import io.phantomBridge.JsonVariables.PUBLIC_KEY
-import io.phantomBridge.JsonVariables.SESSION
+import io.phantomBridge.utils.JsonVariables.PUBLIC_KEY
+import io.phantomBridge.utils.JsonVariables.SESSION
+import io.phantomBridge.utils.SharedPreferencesExtras
+import io.phantomBridge.utils.getStringIfExists
+import io.phantomBridge.utils.putAllStrings
 import org.json.JSONObject
 
 object SessionHandler {
@@ -26,9 +29,8 @@ object SessionHandler {
 
     internal fun getPublicKey(): String {
         if (preferences?.contains(SharedPreferencesExtras.PUBLIC_KEY) == true) {
-            localPublicKey = preferences?.getString(SharedPreferencesExtras.PUBLIC_KEY, "")
-            localPrivateKey =
-                preferences?.getString(SharedPreferencesExtras.PRIVATE_KEY, "")
+            localPublicKey = preferences?.getStringIfExists(SharedPreferencesExtras.PUBLIC_KEY)
+            localPrivateKey = preferences?.getStringIfExists(SharedPreferencesExtras.PRIVATE_KEY)
                     ?.let { decode(it) }
         } else {
             with(TweetNacl.Box.keyPair()) {
@@ -76,14 +78,14 @@ object SessionHandler {
         localPublicKey: String?,
         localPrivateKey: String?
     ) {
-        preferences?.edit()
-            ?.putString(SharedPreferencesExtras.NONCE, nonce)
-            ?.putString(SharedPreferencesExtras.WALLET, wallet)
-            ?.putString(SharedPreferencesExtras.SESSION, session)
-            ?.putString(SharedPreferencesExtras.PHANTOM_PUBLIC_KEY, phantomPublicKey)
-            ?.putString(SharedPreferencesExtras.PUBLIC_KEY, localPublicKey)
-            ?.putString(SharedPreferencesExtras.PRIVATE_KEY, localPrivateKey)
-            ?.apply()
+        preferences?.putAllStrings(
+            Pair(SharedPreferencesExtras.NONCE, nonce),
+            Pair(SharedPreferencesExtras.WALLET, wallet),
+            Pair(SharedPreferencesExtras.SESSION, session),
+            Pair(SharedPreferencesExtras.PHANTOM_PUBLIC_KEY, phantomPublicKey),
+            Pair(SharedPreferencesExtras.PUBLIC_KEY, localPublicKey),
+            Pair(SharedPreferencesExtras.PRIVATE_KEY, localPrivateKey),
+        )
     }
 
 }

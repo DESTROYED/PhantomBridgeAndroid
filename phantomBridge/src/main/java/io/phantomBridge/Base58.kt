@@ -2,7 +2,7 @@ package io.phantomBridge
 
 import java.nio.charset.Charset
 
-object Base58 {
+internal object Base58 {
 
     private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()
     private val INDEXES = IntArray(128)
@@ -16,7 +16,7 @@ object Base58 {
         }
     }
 
-    internal fun encode(inputArray: ByteArray): String {
+    fun encode(inputArray: ByteArray): String {
         var input = inputArray
         if (input.isEmpty()) {
             return ""
@@ -50,7 +50,7 @@ object Base58 {
         return String(output, Charset.forName("US-ASCII"))
     }
 
-    internal fun decode(input: String): ByteArray {
+    fun decode(input: String): ByteArray {
         if (input.isEmpty()) {
             return ByteArray(0)
         }

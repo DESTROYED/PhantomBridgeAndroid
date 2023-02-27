@@ -1,4 +1,4 @@
-package io.phantomBridge
+package io.phantomBridge.utils
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager

@@ -1,11 +1,13 @@
-package io.phantomBridge
+package io.phantomBridge.utils
 
 import android.net.Uri
-import io.phantomBridge.Endpoints.CONNECT_ENDPOINT
-import io.phantomBridge.PhantomQuery.APP_URL_QUERY
-import io.phantomBridge.PhantomQuery.CLUSTER
-import io.phantomBridge.PhantomQuery.DAPP_KEY_QUERY
-import io.phantomBridge.PhantomQuery.REDICRECT_LINK_QUERY
+import io.phantomBridge.BuildConfig
+import io.phantomBridge.utils.Endpoints.CONNECT_ENDPOINT
+import io.phantomBridge.utils.PhantomQuery.APP_URL_QUERY
+import io.phantomBridge.utils.PhantomQuery.CLUSTER
+import io.phantomBridge.utils.PhantomQuery.DAPP_KEY_QUERY
+import io.phantomBridge.utils.PhantomQuery.REDICRECT_LINK_QUERY
+import io.phantomBridge.SessionHandler
 import io.phantomBridge.types.NetworkType
 
 internal class UrlHandler {
@@ -22,15 +24,13 @@ internal class UrlHandler {
                 getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +
                 getQuery(CLUSTER, networkType.environment)
 
-    fun parseQuery(uri: Uri?, query: String): String {
+    fun parseQuery(uri: Uri?, query: String) =
         uri?.let {
             uri.encodedQuery?.substringAfter(query)?.let {
-                return if (it.contains("&")) it.substringBefore("&") else it
+                if (it.contains("&")) it.substringBefore("&") else it
             }
-            return ""
+            ""
         }
-        return ""
-    }
 
 
     private fun buildEndpoint(endpoint: String) = "${BuildConfig.PHANTOM_BASE_URL}/$endpoint"
