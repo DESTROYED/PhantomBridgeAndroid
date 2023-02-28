@@ -1,11 +1,13 @@
 package io.phantomBridge.utils
 
 import android.content.SharedPreferences
+import android.util.Log
 
 fun SharedPreferences.getStringIfExists(extra: String) = if (this.contains(extra)) {
-    this.getString(extra, "")
+    this.getString(extra, "") ?: ""
 } else {
-    null
+    Log.e("SharedPreferencesUtils", "Watch out, your $extra not saved")
+    ""
 }
 
 fun SharedPreferences.putAllStrings(vararg pair: Pair<String?, String?>) {

@@ -7,8 +7,12 @@ internal object PhantomQuery {
     const val NONCE_QUERY = "nonce="
     const val DATE_QUERY = "data="
     const val DAPP_KEY_QUERY = "dapp_encryption_public_key"
+    const val NONCEY_QUERY = "nonce"
+    const val PAYLOAD_QUERY = "payload"
     const val CLUSTER = "cluster"
     const val APP_URL_QUERY = "app_url"
+    const val WALLET_CONNECTION = "walletConnection"
+    const val SIGN_MESSAGE = "sign_message"
     const val REDICRECT_LINK_QUERY = "redirect_link"
 }
 
@@ -18,14 +22,19 @@ internal object Package {
 
 internal object Endpoints {
     const val CONNECT_ENDPOINT = "connect"
+    const val DISCONNECT_ENDPOINT = "disconnect"
+    const val SIGN_MESSAGE_ENDPOINT = "signMessage"
 }
 
 internal object JsonVariables {
     const val PUBLIC_KEY = "public_key"
     const val SESSION = "session"
+    const val SIGNATURE = "signature"
+    const val MESSAGE = "message"
+    const val DISPLAY = "display"
 }
 
-internal object SharedPreferencesExtras{
+internal object SharedPreferencesExtras {
     const val NONCE = "nonce"
     const val WALLET = "wallet"
     const val SESSION = "session"

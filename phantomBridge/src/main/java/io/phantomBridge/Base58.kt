@@ -4,7 +4,8 @@ import java.nio.charset.Charset
 
 internal object Base58 {
 
-    private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()
+    private val ALPHABET =
+        "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()
     private val INDEXES = IntArray(128)
 
     init {

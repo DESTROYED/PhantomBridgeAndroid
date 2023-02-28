@@ -1,4 +1,4 @@
-package io.phantomBridge.error
+package io.phantomBridge.enums.error
 
 enum class ErrorCodes : Error {
     DISCONNECTED {
@@ -24,6 +24,9 @@ enum class ErrorCodes : Error {
     },
     INTERNAL_ERROR {
         override val errorCode = "-32603"
+    },
+    NULL_ARGUMENTS {
+        override val errorCode = "0"
     }
 }
 

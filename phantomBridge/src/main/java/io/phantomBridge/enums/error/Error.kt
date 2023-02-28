@@ -1,4 +1,4 @@
-package io.phantomBridge.error
+package io.phantomBridge.enums.error
 
 interface Error {
     val errorCode: String

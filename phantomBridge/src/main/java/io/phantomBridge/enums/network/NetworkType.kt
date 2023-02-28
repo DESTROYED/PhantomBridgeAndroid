@@ -1,4 +1,4 @@
-package io.phantomBridge.types
+package io.phantomBridge.enums.network
 
 enum class NetworkType : Network {
     MAINNET_BETA {
