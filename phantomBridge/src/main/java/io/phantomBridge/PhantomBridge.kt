@@ -54,11 +54,6 @@ class PhantomBridge(private val redirectScheme: String, private val redirectHost
         packageManager: PackageManager,
         appNotInstalled: () -> Unit
     ) {
-        urlHandler.combineDisconnectUrl(
-            redirectScheme,
-            redirectHost
-        )
-
         if (isPackageInstalled(PHANTOM_PACKAGE, packageManager)) {
             activity.startActivity(
                 Intent(
@@ -82,11 +77,6 @@ class PhantomBridge(private val redirectScheme: String, private val redirectHost
         message: String,
         appNotInstalled: () -> Unit
     ) {
-        urlHandler.combineSignUtfMessageUrl(
-            redirectScheme,
-            redirectHost,
-            message
-        )
         if (isPackageInstalled(PHANTOM_PACKAGE, packageManager)) {
             activity.startActivity(
                 Intent(
@@ -111,11 +101,6 @@ class PhantomBridge(private val redirectScheme: String, private val redirectHost
         message: String,
         appNotInstalled: () -> Unit
     ) {
-        urlHandler.combineSignHexMessageUrl(
-            redirectScheme,
-            redirectHost,
-            message
-        )
         if (isPackageInstalled(PHANTOM_PACKAGE, packageManager)) {
             activity.startActivity(
                 Intent(
