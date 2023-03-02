@@ -1,7 +1,6 @@
 package io.phantomBridge
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.iwebpp.crypto.TweetNacl
 import io.phantomBridge.Base58.encode
 import io.phantomBridge.utils.JsonVariables.PUBLIC_KEY

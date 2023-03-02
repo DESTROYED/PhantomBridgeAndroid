@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.ContextWrapper
 import io.phantomBridge.SessionHandler
 
-class TestApplication : Application() {
+internal class TestApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

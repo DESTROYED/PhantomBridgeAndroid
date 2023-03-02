@@ -10,7 +10,7 @@ import io.phantomBridge.PhantomBridge
 import io.phantomBridge.PhantomHandler
 import io.phantomBridgeandroid.R
 
-class TestActivity : AppCompatActivity() {
+internal class TestActivity : AppCompatActivity() {
 
     private lateinit var phantomBridge: PhantomBridge
     private lateinit var phantomHandler: PhantomHandler
