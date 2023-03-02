@@ -10,6 +10,7 @@ import io.phantomBridge.utils.JsonVariables.SIGNATURE
 import io.phantomBridge.utils.SharedPreferencesExtras
 import io.phantomBridge.utils.SharedPreferencesExtras.PHANTOM_PUBLIC_KEY
 import io.phantomBridge.utils.SharedPreferencesExtras.PRIVATE_KEY
+import io.phantomBridge.utils.clear
 import io.phantomBridge.utils.getStringIfExists
 import io.phantomBridge.utils.putAllStrings
 import org.json.JSONObject
@@ -22,21 +23,22 @@ object SessionHandler {
         preferences = sharedPreferences
     }
 
-    internal fun getWallet() = if (preferences.contains(SharedPreferencesExtras.WALLET))
-        preferences.getString(SharedPreferencesExtras.WALLET, "") else null
+    internal fun getWallet() =
+        if (preferences.contains(SharedPreferencesExtras.WALLET)) preferences.getString(
+            SharedPreferencesExtras.WALLET,
+            ""
+        ) else null
 
-    internal fun getPublicKey() =
-        if (preferences.contains(SharedPreferencesExtras.PUBLIC_KEY)) {
-            preferences.getStringIfExists(SharedPreferencesExtras.PUBLIC_KEY)
-        } else {
-            with(TweetNacl.Box.keyPair()) {
-                preferences.putAllStrings(
-                    Pair(PUBLIC_KEY, encode(publicKey)),
-                    Pair(PRIVATE_KEY, encode(secretKey))
-                )
-                encode(publicKey)
-            }
+    internal fun getPublicKey() = if (preferences.contains(SharedPreferencesExtras.PUBLIC_KEY)) {
+        preferences.getStringIfExists(SharedPreferencesExtras.PUBLIC_KEY)
+    } else {
+        with(TweetNacl.Box.keyPair()) {
+            preferences.putAllStrings(
+                Pair(PUBLIC_KEY, encode(publicKey)), Pair(PRIVATE_KEY, encode(secretKey))
+            )
+            encode(publicKey)
         }
+    }
 
     internal fun getNonce() = preferences.getStringIfExists(SharedPreferencesExtras.NONCE)
 
@@ -46,8 +48,10 @@ object SessionHandler {
         val nonce = preferences.getStringIfExists(SharedPreferencesExtras.NONCE)
         val session = preferences.getStringIfExists(SharedPreferencesExtras.SESSION)
 
-        return Encryptor(phantomPublicKey, privateKey)
-            .encryptPayload(createSessionPayload(session), nonce)
+        return Encryptor(phantomPublicKey, privateKey).encryptPayload(
+                createSessionPayload(session),
+                nonce
+            )
     }
 
     internal fun getSignHexMessagePayload(message: String): String {
@@ -56,8 +60,12 @@ object SessionHandler {
         val nonce = preferences.getStringIfExists(SharedPreferencesExtras.NONCE)
         val session = preferences.getStringIfExists(SharedPreferencesExtras.SESSION)
 
-        return Encryptor(phantomPublicKey, privateKey)
-            .encryptPayload(createSignHEXMessagePayload(session, message), nonce)
+        return Encryptor(phantomPublicKey, privateKey).encryptPayload(
+                createSignHEXMessagePayload(
+                    session,
+                    message
+                ), nonce
+            )
     }
 
     internal fun getSignUtfMessagePayload(message: String): String {
@@ -66,8 +74,12 @@ object SessionHandler {
         val nonce = preferences.getStringIfExists(SharedPreferencesExtras.NONCE)
         val session = preferences.getStringIfExists(SharedPreferencesExtras.SESSION)
 
-        return Encryptor(phantomPublicKey, privateKey)
-            .encryptPayload(createSignUTF8MessagePayload(session, message), nonce)
+        return Encryptor(phantomPublicKey, privateKey).encryptPayload(
+                createSignUTF8MessagePayload(
+                    session,
+                    message
+                ), nonce
+            )
     }
 
     internal fun handleConnection(
@@ -88,12 +100,16 @@ object SessionHandler {
         onWalletConnected(wallet)
     }
 
-    internal fun handleSignMessageData(
-        nonce: String,
-        data: String,
-        onMessageSigned: (signature: String) -> Unit
+    internal fun disconnect(
+        onDisconnected: () -> Unit
     ) {
+        preferences.clear()
+        onDisconnected()
+    }
 
+    internal fun handleSignMessageData(
+        nonce: String, data: String, onMessageSigned: (signature: String) -> Unit
+    ) {
         val privateKey = preferences.getStringIfExists(PRIVATE_KEY)
         val publicKey = preferences.getStringIfExists(PHANTOM_PUBLIC_KEY)
 
@@ -104,10 +120,7 @@ object SessionHandler {
     }
 
     private fun savePhantomData(
-        nonce: String?,
-        wallet: String?,
-        session: String?,
-        phantomPublicKey: String?
+        nonce: String?, wallet: String?, session: String?, phantomPublicKey: String?
     ) {
         preferences.putAllStrings(
             Pair(SharedPreferencesExtras.NONCE, nonce),

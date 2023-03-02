@@ -15,3 +15,7 @@ fun SharedPreferences.putAllStrings(vararg pair: Pair<String?, String?>) {
         pair.forEach { putString(it.first, it.second) }
     }.apply()
 }
+
+fun SharedPreferences.clear() {
+    this.edit().clear().apply()
+}

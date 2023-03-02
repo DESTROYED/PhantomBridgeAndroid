@@ -14,21 +14,20 @@ import io.phantomBridge.utils.Endpoints.DISCONNECT_ENDPOINT
 import io.phantomBridge.utils.Endpoints.SIGN_MESSAGE_ENDPOINT
 import io.phantomBridge.utils.PhantomQuery.NONCEY_QUERY
 import io.phantomBridge.utils.PhantomQuery.PAYLOAD_QUERY
-import io.phantomBridge.utils.PhantomQuery.SIGN_MESSAGE
-import io.phantomBridge.utils.PhantomQuery.WALLET_CONNECTION
 
 internal class UrlHandler {
 
     fun combineConnectionUrl(
         redirectScheme: String,
         redirectHost: String,
+        redirectPath: String,
         appUrl: String,
         networkType: NetworkType = NetworkType.MAINNET_BETA
     ) =
         buildEndpoint(CONNECT_ENDPOINT) +
                 getQuery(
                     REDICRECT_LINK_QUERY,
-                    "$redirectScheme://$redirectHost/$WALLET_CONNECTION/",
+                    "$redirectScheme://$redirectHost$redirectPath/",
                     true
                 ) +
                 getQuery(APP_URL_QUERY, appUrl) +
@@ -38,9 +37,14 @@ internal class UrlHandler {
     fun combineDisconnectUrl(
         redirectScheme: String,
         redirectHost: String,
+        redirectPath: String
     ) =
         buildEndpoint(DISCONNECT_ENDPOINT) +
-                getQuery(REDICRECT_LINK_QUERY, "$redirectScheme://$redirectHost", true) +
+                getQuery(
+                    REDICRECT_LINK_QUERY,
+                    "$redirectScheme://$redirectHost$redirectPath/",
+                    true
+                ) +
                 getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +
                 getQuery(NONCEY_QUERY, getNonce()) +
                 getQuery(PAYLOAD_QUERY, SessionHandler.getSessionPayload())
@@ -48,12 +52,13 @@ internal class UrlHandler {
     fun combineSignUtfMessageUrl(
         redirectScheme: String,
         redirectHost: String,
+        redirectPath: String,
         message: String
     ) =
         buildEndpoint(SIGN_MESSAGE_ENDPOINT) +
                 getQuery(
                     REDICRECT_LINK_QUERY,
-                    "$redirectScheme://$redirectHost/$SIGN_MESSAGE/",
+                    "$redirectScheme://$redirectHost$redirectPath/",
                     true
                 ) +
                 getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +
@@ -63,12 +68,13 @@ internal class UrlHandler {
     fun combineSignHexMessageUrl(
         redirectScheme: String,
         redirectHost: String,
+        redirectPath: String,
         message: String
     ) =
         buildEndpoint(SIGN_MESSAGE_ENDPOINT) +
                 getQuery(
                     REDICRECT_LINK_QUERY,
-                    "$redirectScheme://$redirectHost/$SIGN_MESSAGE/",
+                    "$redirectScheme://$redirectHost$redirectPath/",
                     true
                 ) +
                 getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +

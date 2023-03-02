@@ -7,24 +7,43 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.phantomBridge.PhantomBridge
+import io.phantomBridge.PhantomHandler
 import io.phantomBridgeandroid.R
 
 class TestActivity : AppCompatActivity() {
 
     private lateinit var phantomBridge: PhantomBridge
+    private lateinit var phantomHandler: PhantomHandler
+    private lateinit var messageEditText: EditText
+    private lateinit var disconnectButton: View
+    private lateinit var signUtfMessageButton: View
+    private lateinit var signHexMessageButton: View
+    private lateinit var walletTextView: TextView
+    private lateinit var connectButton: View
+
+    private lateinit var connectionWalletPath: String
+    private lateinit var messageSigningPath: String
+    private lateinit var disconnectionPath: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_connnect_wallet)
         super.onCreate(savedInstanceState)
 
-        val messageEditText = findViewById<EditText>(R.id.messageEditText)
-        val disconnectButton = findViewById<View>(R.id.disconnectButton)
-        val signUtfMessageButton = findViewById<View>(R.id.signUtfMessageButton)
-        val signHexMessageButton = findViewById<View>(R.id.signHexMessageButton)
-        val walletTextView = findViewById<TextView>(R.id.walletTextView)
-        val connectButton = findViewById<View>(R.id.connectButton)
+        messageEditText = findViewById<EditText>(R.id.messageEditText)
+        disconnectButton = findViewById<View>(R.id.disconnectButton)
+        signUtfMessageButton = findViewById<View>(R.id.signUtfMessageButton)
+        signHexMessageButton = findViewById<View>(R.id.signHexMessageButton)
+        walletTextView = findViewById<TextView>(R.id.walletTextView)
+        connectButton = findViewById<View>(R.id.connectButton)
+        connectionWalletPath = getString(R.string.path_connection)
+        messageSigningPath = getString(R.string.path_sign_message)
+        disconnectionPath = getString(R.string.path_disconnection)
 
-        phantomBridge =
-            PhantomBridge(getString(R.string.deep_link_scheme), getString(R.string.deep_link_host))
+        val redirectScheme = getString(R.string.deep_link_scheme)
+        val redirectHost = getString(R.string.deep_link_host)
+
+        phantomBridge = PhantomBridge()
+        phantomHandler = PhantomHandler()
         if (!phantomBridge.getWallet().isNullOrEmpty()) {
             connectButton.visibility = View.GONE
             disconnectButton.visibility = View.VISIBLE
@@ -38,6 +57,9 @@ class TestActivity : AppCompatActivity() {
         connectButton.setOnClickListener {
             if (phantomBridge.getWallet().isNullOrEmpty()) {
                 phantomBridge.connectWallet(
+                    redirectScheme,
+                    redirectHost,
+                    connectionWalletPath,
                     this,
                     getString(R.string.appUrl),
                     packageManager
@@ -48,19 +70,39 @@ class TestActivity : AppCompatActivity() {
         }
 
         disconnectButton.setOnClickListener {
-            phantomBridge.disconnectWallet(this, packageManager) {
+            phantomBridge.disconnectWallet(
+                redirectScheme,
+                redirectHost,
+                disconnectionPath,
+                this,
+                packageManager
+            ) {
 
             }
         }
 
         signUtfMessageButton.setOnClickListener {
-            phantomBridge.signUtfMessage(this, packageManager, messageEditText.text.toString()) {
+            phantomBridge.signUtfMessage(
+                redirectScheme,
+                redirectHost,
+                messageSigningPath,
+                this,
+                packageManager,
+                messageEditText.text.toString()
+            ) {
 
             }
         }
 
         signHexMessageButton.setOnClickListener {
-            phantomBridge.signHexMessage(this, packageManager, messageEditText.text.toString()) {
+            phantomBridge.signHexMessage(
+                redirectScheme,
+                redirectHost,
+                messageSigningPath,
+                this,
+                packageManager,
+                messageEditText.text.toString()
+            ) {
 
             }
         }
@@ -69,11 +111,52 @@ class TestActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         intent.data?.let {
-            phantomBridge.handleIntentData(intent.action, it, {
-                Toast.makeText(this, "Your action succeed " + it, Toast.LENGTH_SHORT).show()
-            }, {
-                Toast.makeText(this, "Looks like we got an error: " + it, Toast.LENGTH_SHORT).show()
-            })
+            phantomHandler.handleSignMessageData(
+                messageSigningPath,
+                intent.action.orEmpty(),
+                it,
+                {
+
+                },
+                {
+
+                }
+            )
+            phantomHandler.handleWalletConnection(
+                connectionWalletPath,
+                intent.action.orEmpty(),
+                it,
+                {
+                    if (!phantomBridge.getWallet().isNullOrEmpty()) {
+                        connectButton.visibility = View.GONE
+                        disconnectButton.visibility = View.VISIBLE
+                        signUtfMessageButton.visibility = View.VISIBLE
+                        signHexMessageButton.visibility = View.VISIBLE
+                        messageEditText.visibility = View.VISIBLE
+                        walletTextView.visibility = View.VISIBLE
+                        walletTextView.text = phantomBridge.getWallet()
+                    }
+                },
+                {
+
+                }
+            )
+            phantomHandler.handleDisconnect(
+                disconnectionPath,
+                intent.action.orEmpty(),
+                it,
+                {
+                    connectButton.visibility = View.VISIBLE
+                    disconnectButton.visibility = View.GONE
+                    signUtfMessageButton.visibility = View.GONE
+                    signHexMessageButton.visibility = View.GONE
+                    messageEditText.visibility = View.GONE
+                    walletTextView.visibility = View.GONE
+                },
+                {
+
+                }
+            )
         }
     }
 }

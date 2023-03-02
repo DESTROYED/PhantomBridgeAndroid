@@ -27,6 +27,12 @@ enum class ErrorCodes : Error {
     },
     NULL_ARGUMENTS {
         override val errorCode = "0"
+    },
+    WRONG_PATH {
+        override val errorCode = "1"
+    },
+    WRONG_ACTION {
+        override val errorCode = "2"
     }
 }
 

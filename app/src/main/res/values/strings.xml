@@ -2,5 +2,8 @@
     <string name="app_name">PhantomBridgeAndroid</string>
     <string name="deep_link_scheme">app</string>
     <string name="deep_link_host">onphantomconnected</string>
+    <string name="path_connection">/connection</string>
+    <string name="path_disconnection">/disconection</string>
+    <string name="path_sign_message">/sign_message</string>
     <string name="appUrl">http://google.com</string>
 </resources>
