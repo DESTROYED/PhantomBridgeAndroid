@@ -21,6 +21,7 @@ internal object Endpoints {
     const val CONNECT_ENDPOINT = "connect"
     const val DISCONNECT_ENDPOINT = "disconnect"
     const val SIGN_MESSAGE_ENDPOINT = "signMessage"
+    const val SIGN_TRANSACTION_ENDPOINT = "signTransaction"
 }
 
 internal object JsonVariables {
@@ -28,6 +29,7 @@ internal object JsonVariables {
     const val SESSION = "session"
     const val SIGNATURE = "signature"
     const val MESSAGE = "message"
+    const val TRANSACTION = "transaction"
     const val DISPLAY = "display"
 }
 

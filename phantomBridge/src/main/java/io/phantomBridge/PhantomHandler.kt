@@ -79,4 +79,6 @@ class PhantomHandler {
             onConnectionError(ErrorCodes.WRONG_ACTION)
         }
     }
+
+    fun isWalletConnected() = SessionHandler.getWallet().orEmpty().isNotEmpty()
 }

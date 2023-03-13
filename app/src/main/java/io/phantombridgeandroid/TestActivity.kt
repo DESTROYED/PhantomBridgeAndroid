@@ -1,6 +1,7 @@
 package io.phantombridgeandroid
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import io.phantomBridge.PhantomBridge
 import io.phantomBridge.PhantomHandler
 import io.phantomBridgeandroid.R
+import io.phantomBridgeandroid.R.id.sendTransactionButton
 
 internal class TestActivity : AppCompatActivity() {
 
@@ -20,6 +22,7 @@ internal class TestActivity : AppCompatActivity() {
     private lateinit var signHexMessageButton: View
     private lateinit var walletTextView: TextView
     private lateinit var connectButton: View
+    private lateinit var sendTransactionButton: View
 
     private lateinit var connectionWalletPath: String
     private lateinit var messageSigningPath: String
@@ -29,6 +32,7 @@ internal class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_connnect_wallet)
         super.onCreate(savedInstanceState)
 
+        sendTransactionButton = findViewById<View>(R.id.sendTransactionButton)
         messageEditText = findViewById<EditText>(R.id.messageEditText)
         disconnectButton = findViewById<View>(R.id.disconnectButton)
         signUtfMessageButton = findViewById<View>(R.id.signUtfMessageButton)
@@ -51,6 +55,7 @@ internal class TestActivity : AppCompatActivity() {
             signHexMessageButton.visibility = View.VISIBLE
             messageEditText.visibility = View.VISIBLE
             walletTextView.visibility = View.VISIBLE
+            sendTransactionButton.visibility = View.VISIBLE
             walletTextView.text = phantomBridge.getWallet()
         }
 
@@ -67,6 +72,14 @@ internal class TestActivity : AppCompatActivity() {
                     Toast.makeText(this, "Phantom app is not installed ", Toast.LENGTH_SHORT).show()
                 }
             } else Toast.makeText(this, "App already connected ", Toast.LENGTH_SHORT).show()
+        }
+
+        sendTransactionButton.setOnClickListener{
+            phantomBridge.sendTransaction(this, packageManager, redirectScheme,
+                redirectHost,
+                connectionWalletPath,"6A8JZcHYQtysJ6GJh9hFf6apj1ppq1CNYyYTvEK93WLF",{
+                    Toast.makeText(this, "Phantom app is not installed ", Toast.LENGTH_SHORT).show()
+                })
         }
 
         disconnectButton.setOnClickListener {
@@ -111,6 +124,7 @@ internal class TestActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         intent.data?.let {
+            Log.d("TEMPODONE", "URII TO PARSE " + it)
             phantomHandler.handleSignMessageData(
                 messageSigningPath,
                 intent.action.orEmpty(),

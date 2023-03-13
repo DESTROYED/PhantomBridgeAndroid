@@ -9,9 +9,11 @@ import io.phantomBridge.utils.PhantomQuery.DAPP_KEY_QUERY
 import io.phantomBridge.utils.PhantomQuery.REDICRECT_LINK_QUERY
 import io.phantomBridge.SessionHandler
 import io.phantomBridge.SessionHandler.getNonce
+import io.phantomBridge.entity.Transaction
 import io.phantomBridge.enums.network.NetworkType
 import io.phantomBridge.utils.Endpoints.DISCONNECT_ENDPOINT
 import io.phantomBridge.utils.Endpoints.SIGN_MESSAGE_ENDPOINT
+import io.phantomBridge.utils.Endpoints.SIGN_TRANSACTION_ENDPOINT
 import io.phantomBridge.utils.PhantomQuery.NONCEY_QUERY
 import io.phantomBridge.utils.PhantomQuery.PAYLOAD_QUERY
 
@@ -80,6 +82,22 @@ internal class UrlHandler {
                 getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +
                 getQuery(NONCEY_QUERY, getNonce()) +
                 getQuery(PAYLOAD_QUERY, SessionHandler.getSignHexMessagePayload(message))
+
+    fun combineSignTransactionUrl(
+        redirectScheme: String,
+        redirectHost: String,
+        redirectPath: String,
+        transaction: Transaction
+    ) =
+        buildEndpoint(SIGN_TRANSACTION_ENDPOINT) +
+                getQuery(
+                    REDICRECT_LINK_QUERY,
+                    "$redirectScheme://$redirectHost$redirectPath/",
+                    true
+                ) +
+                getQuery(DAPP_KEY_QUERY, SessionHandler.getPublicKey()) +
+                getQuery(NONCEY_QUERY, getNonce()) +
+                getQuery(PAYLOAD_QUERY, SessionHandler.getEncodedTransactionPayload(transaction))
 
     fun parseQuery(uri: Uri?, query: String) =
         uri?.let {

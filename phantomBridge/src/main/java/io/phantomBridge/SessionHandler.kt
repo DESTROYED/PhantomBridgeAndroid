@@ -1,8 +1,10 @@
 package io.phantomBridge
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.iwebpp.crypto.TweetNacl
 import io.phantomBridge.Base58.encode
+import io.phantomBridge.entity.Transaction
 import io.phantomBridge.utils.JsonVariables.PUBLIC_KEY
 import io.phantomBridge.utils.JsonVariables.SESSION
 import io.phantomBridge.utils.JsonVariables.SIGNATURE
@@ -66,6 +68,22 @@ object SessionHandler {
                 ), nonce
             )
     }
+     internal fun getEncodedTransactionPayload(transaction: Transaction): String {
+            val privateKey = preferences.getStringIfExists(PRIVATE_KEY)
+            val phantomPublicKey = preferences.getStringIfExists(PHANTOM_PUBLIC_KEY)
+            val nonce = preferences.getStringIfExists(SharedPreferencesExtras.NONCE)
+            val session = preferences.getStringIfExists(SharedPreferencesExtras.SESSION)
+
+         //Log.d("TEMPODONE", createTransactionJson(transaction).toString())
+
+         val encryptedTransaction = encode(createTransactionJson(transaction).toString().toByteArray())
+         return Encryptor(phantomPublicKey, privateKey).encryptPayload(
+                    createTransactionPayload(
+                        session,
+                        encryptedTransaction
+                    ), nonce
+                )
+        }
 
     internal fun getSignUtfMessagePayload(message: String): String {
         val privateKey = preferences.getStringIfExists(PRIVATE_KEY)

@@ -2,7 +2,7 @@ package io.phantomBridge
 
 import java.nio.charset.Charset
 
-internal object Base58 {
+object Base58 {
 
     private val ALPHABET =
         "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()

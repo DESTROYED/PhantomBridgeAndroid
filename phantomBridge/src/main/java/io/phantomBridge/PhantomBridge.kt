@@ -3,7 +3,9 @@ package io.phantomBridge
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import io.phantomBridge.entity.Transaction
 import io.phantomBridge.utils.Package.PHANTOM_PACKAGE
 import io.phantomBridge.enums.network.NetworkType
 import io.phantomBridge.utils.UrlHandler
@@ -113,4 +115,31 @@ class PhantomBridge() {
             appNotInstalled.invoke()
         }
     }
+
+    fun sendTransaction(activity: AppCompatActivity,
+                        packageManager: PackageManager,
+                        redirectScheme: String,
+                        redirectHost: String,
+                        redirectPath: String,
+                        to: String,
+                        appNotInstalled: () -> Unit) =
+        if (isPackageInstalled(PHANTOM_PACKAGE, packageManager)) {
+            Log.d("TEMPODONE", TransactionHandler().createTransaction(getWallet()!!,to).toString())
+            activity.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW, Uri.parse(
+                        urlHandler.combineSignTransactionUrl(
+                            redirectScheme, redirectHost, redirectPath, TransactionHandler().createTransaction(getWallet()!!,to)
+                        )
+                    )
+                )
+            )
+        } else {
+            appNotInstalled.invoke()
+        }
+
+
+    fun createTransaction() = TransactionHandler().createTransaction(SessionHandler.getWallet()!!, "")
+
+    fun editTransactionReceiver(transaction: Transaction, receiver: String) = TransactionHandler().changeTransactionReceiver(transaction, receiver)
 }
