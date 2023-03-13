@@ -1,18 +1,18 @@
 package io.phantomBridge
 
-import android.util.Log
 import io.phantomBridge.entity.Header
 import io.phantomBridge.entity.Instruction
 import io.phantomBridge.entity.Message
 import io.phantomBridge.entity.Transaction
+import org.json.JSONObject
 
 class TransactionHandler {
 
     fun createTransaction(from: String, to: String) = Transaction(createMessage(from, to))
 
-    fun changeTransactionReceiver(transaction: Transaction, receiver: String) = transaction.apply {
-        message.accountKeys[1] = receiver
-    }
+    fun changeTransactionReceiver(transaction: String, receiver: String) = JSONObject(transaction).apply {
+        getJSONObject("message").getJSONArray("accountKeys").put(1, receiver)
+    }.toString()
 
     fun createMessage(from: String, to: String) = Message(
         createAccountKeys(from, to),

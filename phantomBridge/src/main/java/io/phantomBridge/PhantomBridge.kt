@@ -139,7 +139,7 @@ class PhantomBridge() {
         }
 
 
-    fun createTransaction() = TransactionHandler().createTransaction(SessionHandler.getWallet()!!, "")
+    fun createTransaction() = createTransactionJson(TransactionHandler().createTransaction(SessionHandler.getWallet()!!, ""))
 
-    fun editTransactionReceiver(transaction: Transaction, receiver: String) = TransactionHandler().changeTransactionReceiver(transaction, receiver)
+    fun editTransactionReceiver(jsonTransaction: String, receiver: String) = TransactionHandler().changeTransactionReceiver(jsonTransaction, receiver)
 }
